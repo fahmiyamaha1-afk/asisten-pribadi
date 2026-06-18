@@ -3,8 +3,8 @@ from disnake.ext import commands
 import json
 import os
 
-# Token Bot Keuangan Pribadi Terpisah Milik Akang
-TOKEN_BOT_KEUANGAN = 'MTUxNzI4NjMyODgzOTA0NTEzMA.GJArfy.kWN2tDR2IW6l_Vy47cQ7XYM_ACksrNb5JB7hE4'
+# Membaca token secara aman dari sistem Railway Variables
+TOKEN_BOT_KEUANGAN = os.getenv("TOKEN_KEUANGAN")
 
 # Mengaktifkan izin membaca teks chat khusus di DM Pribadi
 intents = disnake.Intents.default()
@@ -47,7 +47,7 @@ async def on_message(message):
 
     teks = message.content.lower().strip()
     
-    # 📌 RADAR FILTER: Membaca teks "uang masuk" atau "uang keluar"
+    # 📌 RADAR FILTER: Membaca teks "uang masuk" or "uang keluar"
     if teks.startswith("uang masuk") or teks.startswith("uang keluar"):
         is_masuk = teks.startswith("uang masuk")
         
@@ -117,4 +117,7 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-bot.run(TOKEN_BOT_KEUANGAN)
+if TOKEN_BOT_KEUANGAN:
+    bot.run(TOKEN_BOT_KEUANGAN)
+else:
+    print("❌ ERROR: Token tidak ditemukan di Variables Railway!")
